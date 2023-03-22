@@ -1,0 +1,107 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    namespace 'com.app.instaimage'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.app.instaimage"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+        buildConfigField("String", "KEY", "\"" + getKey() + "\"")
+        buildConfigField("String", "BASE_URL", "\"" + getBaseUrl() + "\"")
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    hilt {
+        enableAggregatingTask = true
+    }
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.test:monitor:1.6.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
+
+
+    //PendingIntent in your project or you get an error even though you write the flag
+    //Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE
+     implementation 'androidx.work:work-runtime-ktx:2.8.0'
+
+    //dagger hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    kapt "androidx.hilt:hilt-compiler:$hiltCompiler"
+    implementation "androidx.hilt:hilt-work:$hiltCompiler"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+
+    //Room Database
+    implementation "androidx.room:room-runtime:$room"
+    implementation "androidx.room:room-ktx:$room"
+    implementation "androidx.room:room-paging:$room"
+    kapt "androidx.room:room-compiler:$room"
+
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
+    androidTestImplementation "org.mockito:mockito-core:$mockito"
+    testImplementation "org.mockito:mockito-core:$mockito"
+    androidTestImplementation "org.mockito:mockito-android:$mockito"
+
+    //pagination
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
+    // swipe to refresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeVersion"
+
+}
+def getKey() {
+    return project.findProperty("key")
+}
+
+def getBaseUrl() {
+    return project.findProperty("base_url")
+}
